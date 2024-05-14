@@ -1,0 +1,19 @@
+{
+  "name": "wa-messages-broadcaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stage-1": "node ./stages/stage1.js",
+    "stage-2": "node ./stages/stage2.js",
+    "stage-3": "node ./stages/stage3.js"
+  },
+  "author": "Shawan Mandal",
+  "license": "ISC",
+  "dependencies": {
+    "google-auth-library": "^9.8.0",
+    "google-spreadsheet": "^4.1.1",
+    "venom-bot": "^5.1.0"
+  }
+}
