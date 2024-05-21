@@ -8,7 +8,7 @@ const utils = module.exports;
 const outputsDir = path.join(__dirname, 'outputs');
 
 utils.parseWAChatId = (numberString) => {
-    return numberString.replace(/[^0-9]/g, '') + '@c.us';
+    return numberString.replace(/[^+\d]/g, '') + '@c.us';
 }
 
 //utils.parseContactNumber = (chatId) => {
