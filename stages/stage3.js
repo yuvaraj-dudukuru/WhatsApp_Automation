@@ -170,7 +170,7 @@ async function main(client, sheetId, subSheetName)  {
  */
 
 (() => {
-    const sheetId = '1N6xxEPqYxXOE97ZhdrGJ-Boznpd8mKoQ67pTpbNKG3w';
+    const sheetId = '__________________________________________';
     const subSheetName = 'Sheet1';
 
     console.log('Starting stage 2...');
