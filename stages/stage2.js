@@ -16,8 +16,6 @@ async function start(client) {
         const contactNumber = utils.parseContactNumber(number);
         
         const result = {name: contact.name, messages: [], repliedBack: 'No', followUpSent: 'No'}
-//YUVARAJ 6305071247 dudukuruuyuvaraj55@gmail.com 
-
 
         let isValidNumber = null;
         try {
@@ -27,8 +25,9 @@ async function start(client) {
         if (!isValidNumber) {
             result.validNumber = 'No';
             contactsBasedMessagesMap.set(contactNumber, result);
-            
-            console.log(`${contact.name} (${element.name}) is not a valid number, skipping message send...`);
+
+            // console.log(`${contact.name} (${element.name}) is not a valid number, skipping message send...`);
+        console.log(`${contact.name}  is not a valid number, skipping message send...`);
         } else {
             const chat = await client.loadAndGetAllMessagesInChat(number, false, false);
             const receivedMessages = (chat || []).filter(message => message.type === 'chat' && message.body);
