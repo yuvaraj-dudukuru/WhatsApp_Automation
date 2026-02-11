@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  campaigns Campaign[]
+  templates Template[]
+}
+
+model Contact {
+  id          String   @id @default(uuid())
+  phone       String   @unique
+  name        String?
+  email       String?
+  tags        String[] // Array of tags
+  metadata    Json?    // Custom fields
+  segment     String?  // VIP, Customer, Lead, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lastContact DateTime?
+  
+  messages    Message[]
+  campaignContacts CampaignContact[]
+}
+
+model Template {
+  id          String   @id @default(uuid())
+  name        String
+  content     String
+  category    String?  // greeting, reminder, marketing
+  variables   String[] // Array of variable names
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  campaigns   Campaign[]
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  name        String
+  templateId  String
+  template    Template @relation(fields: [templateId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  status      String   @default("draft") // draft, scheduled, running, completed, paused
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  totalContacts Int    @default(0)
+  sentCount   Int      @default(0)
+  failedCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  contacts    CampaignContact[]
+  messages    Message[]
+}
+
+model CampaignContact {
+  id         String   @id @default(uuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id])
+  status     String   @default("pending") // pending, sent, failed, delivered
+  sentAt     DateTime?
+  error      String?
+  
+  @@unique([campaignId, contactId])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id])
+  campaignId String?
+  campaign   Campaign? @relation(fields: [campaignId], references: [id])
+  content    String
+  type       String   @default("text") // text, image, video, document
+  status     String   @default("pending") // pending, sent, delivered, failed
+  direction  String   // incoming, outgoing
+  mediaUrl   String?
+  error      String?
+  sentAt     DateTime?
+  deliveredAt DateTime?
+  createdAt  DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  data      Json     // WhatsApp session data
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
