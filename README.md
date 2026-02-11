@@ -242,4 +242,4 @@ whatsapp-automation-pro/
 
 ---
 
-*Built with ❤️ by [Yuvraj Dudukuru]*
+*Built with ❤️ by [Yuvaraj Dudukuru]*
